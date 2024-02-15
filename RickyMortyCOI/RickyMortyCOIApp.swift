@@ -12,7 +12,7 @@ import ComposableArchitecture
 struct RickyMortyCOIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(
+            CharactersListView(
                 store: Store(
                     initialState: CharactersReducer.State()
                 ) {
