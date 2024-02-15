@@ -5,16 +5,15 @@
 //  Created by Sebastian Hajduk on 15/02/2024.
 //
 
-import Foundation
+import SwiftUI
 import ComposableArchitecture
 
 @Reducer
 struct CharactersReducer {
     @ObservableState
     struct State: Equatable {
-        var characters: IdentifiedArrayOf<Character> = [
-            
-        ]
+        var characters: IdentifiedArrayOf<Character> = []
+        var showCharactersList = false
 
         init() {
             let lastKnownLocation1 = LastKnownLocation(name: "Earth (C-137)")
@@ -49,6 +48,9 @@ struct CharactersReducer {
         Reduce { state, action in
             switch action {
             case .showListButtonTapped:
+                withAnimation {
+                    state.showCharactersList.toggle()
+                }
 
                 return .none
             }
