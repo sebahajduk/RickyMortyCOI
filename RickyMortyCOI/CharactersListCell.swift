@@ -10,26 +10,30 @@ import ComposableArchitecture
 
 struct CharactersListCell: View {
 
-    private let image: UIImage
+    private let imageURL: String
     private let name: String
 
-    init(image: UIImage, name: String) {
-        self.image = image
+    init(imageURL: String, name: String) {
+        self.imageURL = imageURL
         self.name = name
     }
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Image(uiImage: image)
-                .resizable()
-                .clipShape(.rect(cornerRadius: 30.0))
-                .aspectRatio(contentMode: .fit)
-                .overlay {
-                    RoundedCorner(radius: 30.0, corners: [.topLeft, .topRight])
-                        .stroke(lineWidth: 1.0)
-                        .foregroundStyle(.white.opacity(0.3))
-                }
-                .padding(.horizontal, 10.0)
+            AsyncImage(url: URL(string: imageURL)) { image in
+                image.resizable()
+            } placeholder: {
+                ProgressView()
+                    .frame(width: 100.0, height: 100.0)
+            }
+            .clipShape(.rect(cornerRadius: 30.0))
+            .aspectRatio(contentMode: .fit)
+            .overlay {
+                RoundedCorner(radius: 30.0, corners: [.topLeft, .topRight])
+                    .stroke(lineWidth: 1.0)
+                    .foregroundStyle(.white.opacity(0.3))
+            }
+            .padding(.horizontal, 10.0)
 
             LinearGradient(colors: [.black, .white.opacity(0.2), .clear], startPoint: .bottom, endPoint: .center)
                 .padding(.horizontal, 10.0)
@@ -42,7 +46,6 @@ struct CharactersListCell: View {
                         .fontWeight(.bold)
                 }
         }
-
         .padding(10.0)
     }
 }

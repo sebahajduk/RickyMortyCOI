@@ -15,33 +15,13 @@ struct CharactersReducer {
         var characters: IdentifiedArrayOf<Character> = []
         var showCharactersList = false
 
-        init() {
-            let lastKnownLocation1 = LastKnownLocation(name: "Earth (C-137)")
-            let origin1 = Origin(name: "Earth (C-137)")
-            let character1 = Character(id: 1, name: "Rick Sanchez", status: "Alive", gender: "Male", origin: lastKnownLocation1, location: origin1, image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")
-
-            let lastKnownLocation2 = LastKnownLocation(name: "Abadango")
-            let origin2 = Origin(name: "unknown")
-            let character2 = Character(id: 2, name: "Morty Smith", status: "Alive", gender: "Male", origin: lastKnownLocation2, location: origin2, image: "https://rickandmortyapi.com/api/character/avatar/2.jpeg")
-
-            let lastKnownLocation3 = LastKnownLocation(name: "Earth (Replacement Dimension)")
-            let origin3 = Origin(name: "Earth (Replacement Dimension)")
-            let character3 = Character(id: 3, name: "Summer Smith", status: "Alive", gender: "Female", origin: lastKnownLocation3, location: origin3, image: "https://rickandmortyapi.com/api/character/avatar/3.jpeg")
-
-            let lastKnownLocation4 = LastKnownLocation(name: "Earth (C-137)")
-            let origin4 = Origin(name: "Earth (C-137)")
-            let character4 = Character(id: 4, name: "Jerry Smith", status: "Alive", gender: "Male", origin: lastKnownLocation4, location: origin4, image: "https://rickandmortyapi.com/api/character/avatar/4.jpeg")
-
-            let lastKnownLocation5 = LastKnownLocation(name: "Earth (C-137)")
-            let origin5 = Origin(name: "Earth (C-137)")
-            let character5 = Character(id: 5, name: "Beth Smith", status: "Alive", gender: "Female", origin: lastKnownLocation5, location: origin5, image: "https://rickandmortyapi.com/api/character/avatar/5.jpeg")
-
-            characters = [character1, character2, character3, character4, character5]
-        }
+        var page = 1
     }
     
     enum Action {
         case showListButtonTapped
+        case charactersResponse([Character])
+        case reachedBottomOnList
     }
 
     var body: some ReducerOf<Self> {
@@ -51,8 +31,32 @@ struct CharactersReducer {
                 withAnimation {
                     state.showCharactersList.toggle()
                 }
+                
+                if state.showCharactersList {
+                    state.page = 1
+
+                    return .run { send in
+                        let charactersList = try await NetworkService.fetchCharactersList(for: 1)
+
+                        await send(.charactersResponse(charactersList))
+                    }
+                } else {
+                    state.characters = []
+                    return .none
+                }
+            case .charactersResponse(let response):
+                response.forEach { state.characters.append($0) }
 
                 return .none
+            case .reachedBottomOnList:
+                let nextPage = state.page + 1
+                state.page = nextPage
+
+                return .run { send in
+                    let charactersList = try await NetworkService.fetchCharactersList(for: nextPage)
+
+                    await send(.charactersResponse(charactersList))
+                }
             }
         }
     }

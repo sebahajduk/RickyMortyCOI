@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Character: Equatable, Identifiable {
+struct Character: Equatable, Identifiable, Codable {
     let id: Int
     let name: String
     let status: String
@@ -21,10 +21,10 @@ struct Character: Equatable, Identifiable {
     }
 }
 
-struct LastKnownLocation: Equatable {
+struct LastKnownLocation: Equatable, Codable {
     var name: String
 }
 
-struct Origin: Equatable {
+struct Origin: Equatable, Codable {
     var name: String
 }
