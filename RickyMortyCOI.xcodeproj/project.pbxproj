@@ -12,6 +12,8 @@
 		60DC55102B7E98E3007B9845 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60DC550F2B7E98E3007B9845 /* Assets.xcassets */; };
 		60DC55132B7E98E3007B9845 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60DC55122B7E98E3007B9845 /* Preview Assets.xcassets */; };
 		60DC551D2B7E9A48007B9845 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 60DC551C2B7E9A48007B9845 /* ComposableArchitecture */; };
+		60DC551F2B7E9C1A007B9845 /* CharactersReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DC551E2B7E9C1A007B9845 /* CharactersReducer.swift */; };
+		60DC55212B7E9C2E007B9845 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DC55202B7E9C2E007B9845 /* Character.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,8 @@
 		60DC550D2B7E98E2007B9845 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		60DC550F2B7E98E3007B9845 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60DC55122B7E98E3007B9845 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		60DC551E2B7E9C1A007B9845 /* CharactersReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersReducer.swift; sourceTree = "<group>"; };
+		60DC55202B7E9C2E007B9845 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +59,8 @@
 			children = (
 				60DC550B2B7E98E2007B9845 /* RickyMortyCOIApp.swift */,
 				60DC550D2B7E98E2007B9845 /* ContentView.swift */,
+				60DC551E2B7E9C1A007B9845 /* CharactersReducer.swift */,
+				60DC55202B7E9C2E007B9845 /* Character.swift */,
 				60DC550F2B7E98E3007B9845 /* Assets.xcassets */,
 				60DC55112B7E98E3007B9845 /* Preview Content */,
 			);
@@ -83,6 +89,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				60DC55232B7E9DCA007B9845 /* PBXTargetDependency */,
 			);
 			name = RickyMortyCOI;
 			packageProductDependencies = (
@@ -145,12 +152,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60DC551F2B7E9C1A007B9845 /* CharactersReducer.swift in Sources */,
 				60DC550E2B7E98E2007B9845 /* ContentView.swift in Sources */,
 				60DC550C2B7E98E2007B9845 /* RickyMortyCOIApp.swift in Sources */,
+				60DC55212B7E9C2E007B9845 /* Character.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		60DC55232B7E9DCA007B9845 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 60DC55222B7E9DCA007B9845 /* ComposableArchitecture */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		60DC55142B7E98E3007B9845 /* Debug */ = {
@@ -368,6 +384,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		60DC551C2B7E9A48007B9845 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60DC551B2B7E9A48007B9845 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+		60DC55222B7E9DCA007B9845 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 60DC551B2B7E9A48007B9845 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
