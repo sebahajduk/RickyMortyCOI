@@ -17,40 +17,47 @@ struct CharactersListView: View {
     ]
 
     var body: some View {
-        ZStack {
-            Color.customBlack.ignoresSafeArea()
-            
-            if store.showCharactersList {
-                ScrollView {
-                    LazyVGrid(columns: gridColumns) {
-                        ForEach(store.characters) { character in
-                            CharactersListCell(image: UIImage(named: "361")!, name: character.name)
+        WithPerceptionTracking {
+            ZStack {
+                Color.customBlack.ignoresSafeArea()
+
+                if store.showCharactersList {
+                    ScrollView {
+                        LazyVGrid(columns: gridColumns) {
+                            ForEach(store.characters) { character in
+                                CharactersListCell(imageURL: character.image, name: character.name)
+                                    .onAppear {
+                                        if character == store.state.characters.last {
+                                            store.send(.reachedBottomOnList)
+                                        }
+                                    }
+                            }
                         }
                     }
-                }
-                .padding()
-            } else {
-                Text("Tap eye button to show Rick and Morty characters")
-                    .font(.headline)
                     .padding()
-                    .foregroundStyle(.white)
-                    .multilineTextAlignment(.center)
-            }
+                } else {
+                    Text("Tap eye button to show Rick and Morty characters")
+                        .font(.headline)
+                        .padding()
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.center)
+                }
 
-            Button {
-                store.send(.showListButtonTapped)
-            } label: {
-                Circle()
-                    .frame(width: 60.0, height: 60.0)
-                    .foregroundStyle(.white)
-                    .overlay {
-                        Image(systemName: store.showCharactersList ? "eye.slash" : "eye")
-                            .foregroundStyle(Color.customBlack)
-                            .font(.title2)
-                    }
+                Button {
+                    store.send(.showListButtonTapped)
+                } label: {
+                    Circle()
+                        .frame(width: 60.0, height: 60.0)
+                        .foregroundStyle(.white)
+                        .overlay {
+                            Image(systemName: store.showCharactersList ? "eye.slash" : "eye")
+                                .foregroundStyle(Color.customBlack)
+                                .font(.title2)
+                        }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .padding(44.0)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-            .padding(44.0)
         }
     }
 }
@@ -59,7 +66,7 @@ struct CharactersListView: View {
     CharactersListView(
         store: Store(
             initialState: CharactersReducer.State()
-        ){
+        ) {
             CharactersReducer()
         }
     )
