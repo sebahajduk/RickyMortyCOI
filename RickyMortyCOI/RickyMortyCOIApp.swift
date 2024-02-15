@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct RickyMortyCOIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(
+                store: Store(
+                    initialState: CharactersReducer.State()
+                ) {
+                    CharactersReducer()
+                }
+            )
         }
     }
 }

@@ -6,19 +6,26 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct ContentView: View {
+    let store: StoreOf<CharactersReducer>
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List {
+            ForEach(store.characters) { character in
+                Text(character.name)
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(
+        store: Store(
+            initialState: CharactersReducer.State()
+        ){
+            CharactersReducer()
+        }
+    )
 }
