@@ -11,15 +11,18 @@ import ComposableArchitecture
 @Reducer
 struct CharactersReducer {
     @ObservableState
-    struct State: Equatable {
+    struct State {
+        @Presents var characterDetails: CharacterDetailsReducer.State?
+
         var characters: IdentifiedArrayOf<Character> = []
         var showCharactersList = false
-
         var page = 1
+
     }
-    
+
     enum Action {
         case showListButtonTapped
+        case characterDetails(PresentationAction<CharacterDetailsReducer.Action>)
         case charactersResponse([Character])
         case reachedBottomOnList
     }
@@ -31,7 +34,7 @@ struct CharactersReducer {
                 withAnimation {
                     state.showCharactersList.toggle()
                 }
-                
+
                 if state.showCharactersList {
                     state.page = 1
 
@@ -57,7 +60,12 @@ struct CharactersReducer {
 
                     await send(.charactersResponse(charactersList))
                 }
+            case .characterDetails(_):
+                return .none
             }
+        }
+        .ifLet(\.$characterDetails, action: \.characterDetails) {
+            CharacterDetailsReducer()
         }
     }
 }
