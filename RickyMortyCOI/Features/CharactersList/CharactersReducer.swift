@@ -20,7 +20,6 @@ struct CharactersReducer {
 
     }
 
-    
     enum Action {
         case showListButtonTapped
         case charactersResponse([Character])
