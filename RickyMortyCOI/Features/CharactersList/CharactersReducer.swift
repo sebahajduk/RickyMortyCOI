@@ -11,12 +11,15 @@ import ComposableArchitecture
 @Reducer
 struct CharactersReducer {
     @ObservableState
-    struct State: Equatable {
+    struct State {
+        @Presents var characterDetails: CharacterDetailsReducer.State?
+
         var characters: IdentifiedArrayOf<Character> = []
         var showCharactersList = false
-
         var page = 1
+
     }
+
     
     enum Action {
         case showListButtonTapped
@@ -34,10 +37,10 @@ struct CharactersReducer {
                 
                 if state.showCharactersList {
                     state.page = 1
-
+                    
                     return .run { send in
                         let charactersList = try await NetworkService.fetchCharactersList(for: 1)
-
+                        
                         await send(.charactersResponse(charactersList))
                     }
                 } else {
@@ -46,15 +49,15 @@ struct CharactersReducer {
                 }
             case .charactersResponse(let response):
                 response.forEach { state.characters.append($0) }
-
+                
                 return .none
             case .reachedBottomOnList:
                 let nextPage = state.page + 1
                 state.page = nextPage
-
+                
                 return .run { send in
                     let charactersList = try await NetworkService.fetchCharactersList(for: nextPage)
-
+                    
                     await send(.charactersResponse(charactersList))
                 }
             }
