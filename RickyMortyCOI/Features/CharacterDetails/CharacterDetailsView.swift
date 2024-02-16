@@ -6,26 +6,42 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct CharacterDetailsView: View {
 
-    @State private var offset = CGSize.zero
+    let store: StoreOf<CharacterDetailsReducer>
 
     var body: some View {
-        ZStack(alignment: .top) {
-            Color.customBlack.ignoresSafeArea()
+        NavigationView {
+            ZStack(alignment: .top) {
+                Color.customBlack.ignoresSafeArea()
 
-            VStack {
-                Image("361")
-                    .resizable()
+                VStack {
+                    AsyncImage(url: URL(string: store.character.image)) { image in
+                        image.resizable()
+                    } placeholder: {
+                        ProgressView()
+                    }
                     .frame(maxWidth: .infinity)
                     .aspectRatio(contentMode: .fill)
                     .overlay {
-                        LinearGradient(colors: [.customBlack, .clear, .clear], startPoint: .bottom, endPoint: .top)
+                        LinearGradient(
+                            colors: [
+                                .customBlack,
+                                .clear,
+                                .clear
+                            ],
+                            startPoint: .bottom,
+                            endPoint: .top
+                        )
                     }
-                
-                Image("361")
-                    .resizable()
+
+                    AsyncImage(url: URL(string: store.character.image)) { image in
+                        image.resizable()
+                    } placeholder: {
+                        ProgressView()
+                    }
                     .frame(maxWidth: .infinity)
                     .brightness(0.3)
                     .blur(radius: 50.0)
@@ -33,10 +49,10 @@ struct CharacterDetailsView: View {
                         characterDetails
                     }
 
-                ScrollView {
-                    ForEach(1..<100, id: \.self) { episode in
-                        Image("361")
-                            .frame(height: 30.0)
+                    ScrollView {
+                        ForEach(1..<5, id: \.self) { episode in
+                            AsyncImage(url: URL(string: store.character.image))
+                                .frame(height: 30.0)
                             .brightness(0.3)
                             .blur(radius: 50.0)
                             .mask {
@@ -44,27 +60,27 @@ struct CharacterDetailsView: View {
                                     .frame(maxWidth: .infinity)
                                     .font(.system(size: 15.0, weight: .black))
                             }
+                        }
                     }
+                    .padding(.top, 10.0)
                 }
-                .offset(y: -20)
+                .ignoresSafeArea()
             }
         }
     }
 
     var characterDetails: some View {
-        VStack(spacing: 10.0) {
-            Text("Ricky Morty".uppercased())
+        Group {
+            Text(store.character.name.uppercased())
                 .font(.system(size: 30.0, weight: .black))
-            
-            HStack {
-                parameter(for: "Status", value: "Alive")
 
-                parameter(for: "Gender", value: "Male")
+            parameter(for: "Status", value: store.character.status)
 
-                parameter(for: "Origin", value: "Earth")
+            parameter(for: "Gender", value: store.character.gender)
 
-                parameter(for: "Location", value: "Earth")
-            }
+            parameter(for: "Origin", value: store.character.origin.name)
+
+            parameter(for: "Location", value: store.character.location.name)
 
             Text("Episodes".uppercased())
                 .font(.system(size: 20.0, weight: .black))
@@ -87,5 +103,22 @@ extension CharacterDetailsView {
 }
 
 #Preview {
-    CharacterDetailsView()
+    CharacterDetailsView(
+        store: Store(
+            initialState: CharacterDetailsReducer.State(
+                character: Character(
+                    id: 1,
+                    name: "Ricky Morty",
+                    status: "Alive",
+                    gender: "Male",
+                    origin: LastKnownLocation(name: "Earth"),
+                    location: Origin(name: "Earth"),
+                    image: "https://rickandmortyapi.com/api/character/avatar/361.jpeg"
+                )
+            ),
+            reducer: {
+                CharacterDetailsReducer()
+            }
+        )
+    )
 }
