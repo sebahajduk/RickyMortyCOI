@@ -77,7 +77,6 @@ struct CharactersListView: View {
     }
 }
 
-
 #Preview {
     CharactersListView(
         store: Store(

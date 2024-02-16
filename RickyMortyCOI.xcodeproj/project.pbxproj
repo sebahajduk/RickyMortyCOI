@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		602B16D32B7F70DC00F6B896 /* NavigationLink+Composable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602B16D22B7F70DC00F6B896 /* NavigationLink+Composable.swift */; };
 		60D4CE962B7EBD210088383C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4CE952B7EBD210088383C /* NetworkService.swift */; };
 		60D4CE982B7EBDB70088383C /* NetworkServiceErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */; };
 		60D4CE9C2B7ECD4C0088383C /* CharacterDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4CE9B2B7ECD4C0088383C /* CharacterDetailsView.swift */; };
@@ -26,7 +25,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		602B16D22B7F70DC00F6B896 /* NavigationLink+Composable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+Composable.swift"; sourceTree = "<group>"; };
 		60D4CE952B7EBD210088383C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceErrors.swift; sourceTree = "<group>"; };
 		60D4CE9B2B7ECD4C0088383C /* CharacterDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsView.swift; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				60DC552A2B7EA5F5007B9845 /* View+cornerRadius.swift */,
-				602B16D22B7F70DC00F6B896 /* NavigationLink+Composable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -221,7 +218,6 @@
 				60D4CE982B7EBDB70088383C /* NetworkServiceErrors.swift in Sources */,
 				60DC550C2B7E98E2007B9845 /* RickyMortyCOIApp.swift in Sources */,
 				60DC55252B7EA268007B9845 /* CharactersListCell.swift in Sources */,
-				602B16D32B7F70DC00F6B896 /* NavigationLink+Composable.swift in Sources */,
 				60DC55212B7E9C2E007B9845 /* Character.swift in Sources */,
 				60DC552D2B7EA649007B9845 /* RoundedCorner.swift in Sources */,
 			);
