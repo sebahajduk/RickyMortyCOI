@@ -17,10 +17,8 @@ struct CharactersReducer {
         var characters: IdentifiedArrayOf<Character> = []
         var showCharactersList = false
         var page = 1
-
     }
 
-    
     enum Action {
         case showListButtonTapped
         case charactersResponse([Character])

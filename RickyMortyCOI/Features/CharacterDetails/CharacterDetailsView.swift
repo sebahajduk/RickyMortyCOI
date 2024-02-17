@@ -10,62 +10,79 @@ import ComposableArchitecture
 
 struct CharacterDetailsView: View {
 
-    let store: StoreOf<CharacterDetailsReducer>
+    @Perception.Bindable var store: StoreOf<CharacterDetailsReducer>
 
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .top) {
-                Color.customBlack.ignoresSafeArea()
+        WithPerceptionTracking {
+            NavigationView {
+                ZStack(alignment: .top) {
+                    Color.customBlack.ignoresSafeArea()
 
-                VStack {
-                    AsyncImage(url: URL(string: store.character.image)) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .aspectRatio(contentMode: .fill)
-                    .overlay {
-                        LinearGradient(
-                            colors: [
-                                .customBlack,
-                                .clear,
-                                .clear
-                            ],
-                            startPoint: .bottom,
-                            endPoint: .top
-                        )
-                    }
+                    VStack(spacing: 10.0) {
+                        AsyncImage(url: URL(string: store.character.image)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .aspectRatio(contentMode: .fill)
+                        .overlay {
+                            LinearGradient(
+                                colors: [
+                                    .customBlack,
+                                    .clear,
+                                    .clear
+                                ],
+                                startPoint: .bottom,
+                                endPoint: .top
+                            )
+                        }
 
-                    AsyncImage(url: URL(string: store.character.image)) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .brightness(0.3)
-                    .blur(radius: 50.0)
-                    .mask {
-                        characterDetails
-                    }
+                        AsyncImage(url: URL(string: store.character.image)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .brightness(0.3)
+                        .blur(radius: 50.0)
+                        .mask {
+                            characterDetails
+                        }
 
-                    ScrollView {
-                        ForEach(1..<5, id: \.self) { episode in
-                            AsyncImage(url: URL(string: store.character.image))
-                                .frame(height: 30.0)
-                            .brightness(0.3)
-                            .blur(radius: 50.0)
-                            .mask {
-                                Text("Episode \(episode)".uppercased())
-                                    .frame(maxWidth: .infinity)
-                                    .font(.system(size: 15.0, weight: .black))
+                        ScrollView {
+                            ForEach(store.character.episode, id: \.self) { episodeURL in
+                                AsyncImage(url: URL(string: store.character.image))
+                                    .frame(height: 30.0)
+                                    .brightness(0.3)
+                                    .blur(radius: 50.0)
+                                    .mask {
+                                        Text("Episode \(episodeURL.mapEpisodeURLToNumber())".uppercased())
+                                            .frame(maxWidth: .infinity)
+                                            .font(.system(size: 15.0, weight: .black))
+                                    }
+                                    .onTapGesture {
+                                        var transaction = Transaction()
+                                        transaction.disablesAnimations = true
+
+                                        store.send(.episodeTapped(episode: episodeURL))
+                                    }
                             }
                         }
                     }
-                    .padding(.top, 10.0)
+                    .ignoresSafeArea()
                 }
-                .ignoresSafeArea()
+                .fullScreenCover(isPresented: $store.episodeDetailsIsPresented.sending(\.setEpisodeDetails)) {
+                    if let store = store.scope(state: \.episodeDetails, action: \.episodeDetails) {
+                        EpisodeDetailsView(
+                            store: store
+                        )
+                        .background(ClearBackground())
+                        .ignoresSafeArea()
+                    }
+                }
             }
+            .navigationBarBackButtonHidden(store.episodeDetailsIsPresented)
         }
     }
 
@@ -73,32 +90,30 @@ struct CharacterDetailsView: View {
         Group {
             Text(store.character.name.uppercased())
                 .font(.system(size: 30.0, weight: .black))
+                .lineLimit(1)
+                .minimumScaleFactor(0.3)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .inset(by: -5.0)
+                        .stroke()
+                }
 
-            parameter(for: "Status", value: store.character.status)
+            ParameterView(parameterName: "Status", parameterValue: store.character.status)
+                .padding(.top, 5.0)
+            ParameterView(parameterName: "Gender", parameterValue: store.character.gender)
 
-            parameter(for: "Gender", value: store.character.gender)
+            ParameterView(parameterName: "Origin", parameterValue: store.character.origin.name)
 
-            parameter(for: "Origin", value: store.character.origin.name)
+            ParameterView(parameterName: "Location", parameterValue: store.character.location.name)
 
-            parameter(for: "Location", value: store.character.location.name)
+            Rectangle()
+                .frame(height: 1)
+                .padding(.vertical, 10.0)
 
             Text("Episodes".uppercased())
                 .font(.system(size: 20.0, weight: .black))
-                .padding(.top, 10.0)
         }
-    }
-}
-
-extension CharacterDetailsView {
-    func parameter(for name: String, value: String) -> some View {
-        VStack {
-            Text(value.uppercased())
-                .font(.system(size: 15.0, weight: .heavy))
-
-            Text(name.uppercased())
-                .font(.system(size: 8.0))
-        }
-        .frame(maxWidth: .infinity)
+        .padding(.horizontal)
     }
 }
 
@@ -111,9 +126,10 @@ extension CharacterDetailsView {
                     name: "Ricky Morty",
                     status: "Alive",
                     gender: "Male",
-                    origin: LastKnownLocation(name: "Earth"),
-                    location: Origin(name: "Earth"),
-                    image: "https://rickandmortyapi.com/api/character/avatar/361.jpeg"
+                    origin: Origin(name: "Earth"),
+                    location: LastKnownLocation(name: "Earth"),
+                    image: "https://rickandmortyapi.com/api/character/avatar/361.jpeg",
+                    episode: []
                 )
             ),
             reducer: {
