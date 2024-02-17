@@ -33,6 +33,7 @@ struct CharactersListCell: View {
                     Color.red
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .clipShape(.rect(cornerRadius: 30.0))
             .aspectRatio(contentMode: .fit)
             .overlay {
