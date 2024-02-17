@@ -10,76 +10,83 @@ import ComposableArchitecture
 
 struct CharacterDetailsView: View {
 
-    let store: StoreOf<CharacterDetailsReducer>
-
-    @State private var isPresented = false
+    @Perception.Bindable var store: StoreOf<CharacterDetailsReducer>
 
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .top) {
-                Color.customBlack.ignoresSafeArea()
+        WithPerceptionTracking {
+            NavigationView {
+                ZStack(alignment: .top) {
+                    Color.customBlack.ignoresSafeArea()
 
-                VStack(spacing: 10.0) {
-                    AsyncImage(url: URL(string: store.character.image)) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .aspectRatio(contentMode: .fill)
-                    .overlay {
-                        LinearGradient(
-                            colors: [
-                                .customBlack,
-                                .clear,
-                                .clear
-                            ],
-                            startPoint: .bottom,
-                            endPoint: .top
-                        )
-                    }
+                    VStack(spacing: 10.0) {
+                        AsyncImage(url: URL(string: store.character.image)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .aspectRatio(contentMode: .fill)
+                        .overlay {
+                            LinearGradient(
+                                colors: [
+                                    .customBlack,
+                                    .clear,
+                                    .clear
+                                ],
+                                startPoint: .bottom,
+                                endPoint: .top
+                            )
+                        }
 
-                    AsyncImage(url: URL(string: store.character.image)) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .brightness(0.3)
-                    .blur(radius: 50.0)
-                    .mask {
-                        characterDetails
-                    }
+                        AsyncImage(url: URL(string: store.character.image)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .brightness(0.3)
+                        .blur(radius: 50.0)
+                        .mask {
+                            characterDetails
+                        }
 
-                    ScrollView {
-                        ForEach(1..<5, id: \.self) { episode in
-                            AsyncImage(url: URL(string: store.character.image))
-                                .frame(height: 30.0)
-                            .brightness(0.3)
-                            .blur(radius: 50.0)
-                            .mask {
-                                Text("Episode \(episode)".uppercased())
-                                    .frame(maxWidth: .infinity)
-                                    .font(.system(size: 15.0, weight: .black))
-                            }
-                            .onTapGesture {
-                                withAnimation {
-                                    isPresented.toggle()
-                                }
+                        ScrollView {
+                            ForEach(1..<5, id: \.self) { episode in
+                                AsyncImage(url: URL(string: store.character.image))
+                                    .frame(height: 30.0)
+                                    .brightness(0.3)
+                                    .blur(radius: 50.0)
+                                    .mask {
+                                        Text("Episode \(episode)".uppercased())
+                                            .frame(maxWidth: .infinity)
+                                            .font(.system(size: 15.0, weight: .black))
+                                    }
+                                    .onTapGesture {
+                                        var transaction = Transaction()
+                                        transaction.disablesAnimations = true
+
+                                        store.send(.setEpisodeDetails(isPresented: true))
+                                    }
                             }
                         }
                     }
+                    .ignoresSafeArea()
                 }
-                .ignoresSafeArea()
-            }
-            .overlay {
-                if isPresented {
-                    EpisodeDetailsView(isPresented: $isPresented)
+                .fullScreenCover(isPresented: $store.episodeDetailsIsPresented.sending(\.setEpisodeDetails)) {
+
+                    if let store = store.scope(state: \.episodeDetails, action: \.episodeDetails) {
+                        EpisodeDetailsView(
+                            store: store
+                        )
+                        .background(ClearBackground())
                         .ignoresSafeArea()
+                    }
+
                 }
+
             }
+            .navigationBarBackButtonHidden(store.episodeDetailsIsPresented)
         }
-        .navigationBarBackButtonHidden(isPresented)
     }
 
     var characterDetails: some View {
@@ -122,8 +129,8 @@ struct CharacterDetailsView: View {
                     name: "Ricky Morty",
                     status: "Alive",
                     gender: "Male",
-                    origin: LastKnownLocation(name: "Earth"),
-                    location: Origin(name: "Earth"),
+                    origin: Origin(name: "Earth"),
+                    location: LastKnownLocation(name: "Earth"),
                     image: "https://rickandmortyapi.com/api/character/avatar/361.jpeg"
                 )
             ),

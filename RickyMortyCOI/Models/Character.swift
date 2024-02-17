@@ -12,8 +12,8 @@ struct Character: Equatable, Identifiable, Codable {
     let name: String
     let status: String
     let gender: String
-    let origin: LastKnownLocation
-    let location: Origin
+    let origin: Origin
+    let location: LastKnownLocation
     let image: String
 
     static func == (lhs: Character, rhs: Character) -> Bool {

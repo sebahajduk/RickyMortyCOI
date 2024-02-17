@@ -10,16 +10,14 @@ import ComposableArchitecture
 
 struct EpisodeDetailsView: View {
 
-    @Binding var isPresented: Bool
+    var store: StoreOf<EpisodeDetailsReducer>
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.3)
+            Color.customBlack.opacity(0.3)
                 .background(.ultraThinMaterial)
                 .onTapGesture {
-                    withAnimation {
-                        isPresented.toggle()
-                    }
+                    store.send(.closeButtonTapped)
                 }
 
             VStack(spacing: 10.0) {
@@ -34,9 +32,7 @@ struct EpisodeDetailsView: View {
             .padding()
             .overlay(alignment: .topTrailing) {
                 Button {
-                    withAnimation {
-                        isPresented.toggle()
-                    }
+                    store.send(.closeButtonTapped)
                 } label: {
                     Text("X")
                 }
