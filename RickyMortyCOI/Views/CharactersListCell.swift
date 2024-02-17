@@ -20,19 +20,25 @@ struct CharactersListCell: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            AsyncImage(url: URL(string: imageURL)) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
-                    .frame(width: 100.0, height: 100.0)
+            AsyncImage(url: URL(string: imageURL)) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                        .frame(width: 100.0, height: 100.0)
+                case .success(let image):
+                    image.resizable()
+                case .failure:
+                    tryAgain()
+                default:
+                    Color.red
+                }
             }
             .clipShape(.rect(cornerRadius: 30.0))
             .aspectRatio(contentMode: .fit)
             .overlay {
-
-//                RoundedCorner(radius: 30.0, corners: [.topLeft, .topRight])
-//                    .stroke(lineWidth: 1.0)
-//                    .foregroundStyle(.white.opacity(0.3))
+                RoundedRectangle(cornerRadius: 30.0)
+                    .stroke(lineWidth: 1.0)
+                    .foregroundStyle(.white.opacity(0.3))
             }
             .padding(.horizontal, 10.0)
 
@@ -48,6 +54,29 @@ struct CharactersListCell: View {
                 }
         }
         .padding(10.0)
+    }
+
+    func tryAgain() -> some View {
+        AsyncImage(url: URL(string: imageURL)) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+            case .success(let image):
+                image.resizable()
+            case .failure:
+                Color.red
+            default:
+                Color.red
+            }
+        }
+        .clipShape(.rect(cornerRadius: 30.0))
+        .aspectRatio(contentMode: .fit)
+        .overlay {
+            RoundedRectangle(cornerRadius: 30.0)
+                .stroke(lineWidth: 1.0)
+                .foregroundStyle(.white.opacity(0.3))
+        }
+        .padding(.horizontal, 10.0)
     }
 }
 
