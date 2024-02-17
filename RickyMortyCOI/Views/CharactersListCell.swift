@@ -46,14 +46,6 @@ struct CharactersListCell: View {
                     Text(name)
                         .fontWeight(.bold)
                 }
-
-//            RoundedCorner(radius: 10.0, corners: [.topLeft, .topRight])
-//                .foregroundStyle(.white)
-//                .frame(maxHeight: 30.0)
-//                .overlay {
-//                    Text(name)
-//                        .fontWeight(.bold)
-//                }
         }
         .padding(10.0)
     }

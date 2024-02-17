@@ -10,33 +10,29 @@ import ComposableArchitecture
 
 struct EpisodeDetailsView: View {
 
-    @Binding var isPresented: Bool
+    var store: StoreOf<EpisodeDetailsReducer>
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.3)
+            Color.customBlack.opacity(0.3)
                 .background(.ultraThinMaterial)
                 .onTapGesture {
-                    withAnimation {
-                        isPresented.toggle()
-                    }
+                    store.send(.closeButtonTapped)
                 }
 
             VStack(spacing: 10.0) {
-                ParameterView(parameterName: "Episode name", parameterValue: "Anatomy Park")
+                ParameterView(parameterName: "Episode name", parameterValue: store.episode.name)
 
-                ParameterView(parameterName: "Episode", parameterValue: "S01E03")
+                ParameterView(parameterName: "Episode", parameterValue: store.episode.episode)
 
-                ParameterView(parameterName: "Air date", parameterValue: "December 16, 2013")
+                ParameterView(parameterName: "Air date", parameterValue: store.episode.airDate)
 
-                ParameterView(parameterName: "Characters", parameterValue: "21")
+                ParameterView(parameterName: "Characters", parameterValue: "\(store.episode.characters.count)")
             }
             .padding()
             .overlay(alignment: .topTrailing) {
                 Button {
-                    withAnimation {
-                        isPresented.toggle()
-                    }
+                    store.send(.closeButtonTapped)
                 } label: {
                     Text("X")
                 }

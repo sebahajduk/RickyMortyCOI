@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		602B16D62B7F801900F6B896 /* EpisodeDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602B16D52B7F801900F6B896 /* EpisodeDetailsView.swift */; };
 		602B16D82B7F82F400F6B896 /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602B16D72B7F82F400F6B896 /* ParameterView.swift */; };
+		608040D12B7FF46B00EC4783 /* EpisodeDetailsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608040D02B7FF46B00EC4783 /* EpisodeDetailsReducer.swift */; };
+		608040D32B7FF96D00EC4783 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608040D22B7FF96D00EC4783 /* Episode.swift */; };
+		608040D72B8149A000EC4783 /* ClearBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608040D62B8149A000EC4783 /* ClearBackground.swift */; };
+		608040D92B815AFF00EC4783 /* String+removeURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608040D82B815AFF00EC4783 /* String+removeURL.swift */; };
 		60D4CE962B7EBD210088383C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4CE952B7EBD210088383C /* NetworkService.swift */; };
 		60D4CE982B7EBDB70088383C /* NetworkServiceErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */; };
 		60D4CE9C2B7ECD4C0088383C /* CharacterDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D4CE9B2B7ECD4C0088383C /* CharacterDetailsView.swift */; };
@@ -27,6 +31,10 @@
 /* Begin PBXFileReference section */
 		602B16D52B7F801900F6B896 /* EpisodeDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailsView.swift; sourceTree = "<group>"; };
 		602B16D72B7F82F400F6B896 /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
+		608040D02B7FF46B00EC4783 /* EpisodeDetailsReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailsReducer.swift; sourceTree = "<group>"; };
+		608040D22B7FF96D00EC4783 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
+		608040D62B8149A000EC4783 /* ClearBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearBackground.swift; sourceTree = "<group>"; };
+		608040D82B815AFF00EC4783 /* String+removeURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+removeURL.swift"; sourceTree = "<group>"; };
 		60D4CE952B7EBD210088383C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceErrors.swift; sourceTree = "<group>"; };
 		60D4CE9B2B7ECD4C0088383C /* CharacterDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsView.swift; sourceTree = "<group>"; };
@@ -58,8 +66,39 @@
 			isa = PBXGroup;
 			children = (
 				602B16D52B7F801900F6B896 /* EpisodeDetailsView.swift */,
+				608040D02B7FF46B00EC4783 /* EpisodeDetailsReducer.swift */,
 			);
 			path = EpisodeDetails;
+			sourceTree = "<group>";
+		};
+		608040D42B813D2A00EC4783 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				602B16D72B7F82F400F6B896 /* ParameterView.swift */,
+				60DC55242B7EA268007B9845 /* CharactersListCell.swift */,
+				608040D62B8149A000EC4783 /* ClearBackground.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		608040D52B813D3F00EC4783 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				60DC552E2B7EB5ED007B9845 /* Color+customColors.swift */,
+				608040D82B815AFF00EC4783 /* String+removeURL.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		60966F882B7FD27400743D4B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				60DC55202B7E9C2E007B9845 /* Character.swift */,
+				60D4CE952B7EBD210088383C /* NetworkService.swift */,
+				60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */,
+				608040D22B7FF96D00EC4783 /* Episode.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		60D4CE992B7ECAD40088383C /* CharactersList */ = {
@@ -99,16 +138,13 @@
 		60DC550A2B7E98E2007B9845 /* RickyMortyCOI */ = {
 			isa = PBXGroup;
 			children = (
+				608040D52B813D3F00EC4783 /* Utilities */,
+				608040D42B813D2A00EC4783 /* Views */,
+				60966F882B7FD27400743D4B /* Models */,
 				60DC55262B7EA271007B9845 /* Features */,
 				60DC550B2B7E98E2007B9845 /* RickyMortyCOIApp.swift */,
-				60DC55202B7E9C2E007B9845 /* Character.swift */,
-				60DC55242B7EA268007B9845 /* CharactersListCell.swift */,
 				60DC550F2B7E98E3007B9845 /* Assets.xcassets */,
 				60DC55112B7E98E3007B9845 /* Preview Content */,
-				60DC552E2B7EB5ED007B9845 /* Color+customColors.swift */,
-				60D4CE952B7EBD210088383C /* NetworkService.swift */,
-				60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */,
-				602B16D72B7F82F400F6B896 /* ParameterView.swift */,
 			);
 			path = RickyMortyCOI;
 			sourceTree = "<group>";
@@ -212,10 +248,14 @@
 				602B16D62B7F801900F6B896 /* EpisodeDetailsView.swift in Sources */,
 				60D4CE9E2B7F5B750088383C /* CharacterDetailsReducer.swift in Sources */,
 				60DC552F2B7EB5ED007B9845 /* Color+customColors.swift in Sources */,
+				608040D92B815AFF00EC4783 /* String+removeURL.swift in Sources */,
 				60D4CE9C2B7ECD4C0088383C /* CharacterDetailsView.swift in Sources */,
 				602B16D82B7F82F400F6B896 /* ParameterView.swift in Sources */,
+				608040D12B7FF46B00EC4783 /* EpisodeDetailsReducer.swift in Sources */,
 				60DC550E2B7E98E2007B9845 /* CharactersListView.swift in Sources */,
+				608040D72B8149A000EC4783 /* ClearBackground.swift in Sources */,
 				60D4CE962B7EBD210088383C /* NetworkService.swift in Sources */,
+				608040D32B7FF96D00EC4783 /* Episode.swift in Sources */,
 				60D4CE982B7EBDB70088383C /* NetworkServiceErrors.swift in Sources */,
 				60DC550C2B7E98E2007B9845 /* RickyMortyCOIApp.swift in Sources */,
 				60DC55252B7EA268007B9845 /* CharactersListCell.swift in Sources */,
