@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct CharactersListView: View {
-    @State var store: StoreOf<CharactersReducer>
+    @Perception.Bindable var store: StoreOf<CharactersReducer>
 
     private let gridColumns = [
         GridItem(.adaptive(minimum: 150.0, maximum: 300.0)),
@@ -29,19 +29,19 @@ struct CharactersListView: View {
                         ScrollView {
                             LazyVGrid(columns: gridColumns) {
                                 ForEach(store.characters) { character in
-                                    NavigationLink {
-                                        CharacterDetailsView(
-                                            store: Store(initialState: CharacterDetailsReducer.State(
-                                                character: character,
-                                                isFavorite: store.favoritesID.contains(character.id)
-                                            ),
-                                                         reducer: {
-                                                             CharacterDetailsReducer()
-                                                         }
+                                    WithPerceptionTracking {
+                                        NavigationLink {
+                                            CharacterDetailsView(
+                                                store: Store(initialState: CharacterDetailsReducer.State(
+                                                    character: character,
+                                                    isFavorite: store.favoritesID.contains(character.id)
+                                                ),
+                                                             reducer: {
+                                                                 CharacterDetailsReducer()
+                                                             }
+                                                )
                                             )
-                                        )
-                                    } label: {
-                                        WithPerceptionTracking {
+                                        } label: {
                                             CharactersListCell(imageURL: character.image, name: character.name, isFavorite: store.favoritesID.contains(character.id))
                                                 .onAppear {
                                                     if character == store.state.characters.last {
@@ -49,9 +49,8 @@ struct CharactersListView: View {
                                                     }
                                                 }
                                         }
-
+                                        .buttonStyle(.plain)
                                     }
-                                    .buttonStyle(.plain)
                                 }
                             }
                         }
@@ -78,7 +77,9 @@ struct CharactersListView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                     .padding(44.0)
+                    .alert($store.scope(state: \.alert, action: \.alert))
                 }
+
             }
         }
     }

@@ -12,6 +12,7 @@ import ComposableArchitecture
 struct CharacterDetailsReducer {
     @ObservableState
     struct State {
+        @Presents var alert: AlertState<Action.Alert>?
         var episodeDetails: EpisodeDetailsReducer.State?
         let character: Character
         var episode: Episode?
@@ -29,6 +30,13 @@ struct CharacterDetailsReducer {
         case onSuccessEpisodeSetup(episode: Episode)
 
         case favoriteButtonTapped
+
+        case errorOccured(NetworkServiceErrors)
+        case alert(PresentationAction<Alert>)
+
+        enum Alert {
+            case cancelButtonTapped
+        }
     }
 
     var body: some ReducerOf<Self> {
@@ -51,9 +59,22 @@ struct CharacterDetailsReducer {
 
             case .episodeTapped(episode: let episode):
                 return .run { send in
-                    let episode = try await NetworkService.fetchEpisodeDetails(for: episode)
-                    await send(.onSuccessEpisodeSetup(episode: episode))
+                    do {
+                        let episode = try await NetworkService.fetchEpisodeDetails(for: episode)
+                        await send(.onSuccessEpisodeSetup(episode: episode))
+                    } catch {
+                        if let error = error as? NetworkServiceErrors {
+                            await send(.errorOccured(error))
+                        }
+                    }
                 }
+
+            case .alert(.presented(.cancelButtonTapped)):
+                state.alert = nil
+                return .none
+
+            case .alert:
+                return .none
 
             case .onSuccessEpisodeSetup(episode: let episode):
                 state.episode = episode
@@ -77,7 +98,21 @@ struct CharacterDetailsReducer {
                         }
                     }
                 }
+
+            case .errorOccured(let error):
+                state.alert = AlertState {
+                    TextState("Error occured!")
+                } actions: {
+                    ButtonState(role: .cancel) {
+                        TextState("Cancel")
+                    }
+                } message: {
+                    TextState(error.errorDescription ?? "Unknown error")
+                }
+
+                return .none
             }
         }
+        .ifLet(\.$alert, action: \.alert)
     }
 }

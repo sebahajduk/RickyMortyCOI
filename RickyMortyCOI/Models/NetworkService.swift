@@ -13,6 +13,7 @@ struct NetworkService {
     }
 
     static func fetchCharactersList(for page: Int) async throws -> [Character] {
+        throw NetworkServiceErrors.wrongURL
         guard
             let url = URL(string: "https://rickandmortyapi.com/api/character?page=\(page)")
         else {
