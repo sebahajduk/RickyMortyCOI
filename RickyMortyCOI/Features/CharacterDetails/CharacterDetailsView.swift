@@ -11,6 +11,7 @@ import ComposableArchitecture
 struct CharacterDetailsView: View {
     @Perception.Bindable var store: StoreOf<CharacterDetailsReducer>
     @State private var image: Image?
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         WithPerceptionTracking {
@@ -80,6 +81,19 @@ struct CharacterDetailsView: View {
             }
             .alert($store.scope(state: \.alert, action: \.alert))
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.headline)
+                            .padding(10.0)
+                            .background(Color.customBlack)
+                            .clipShape(.rect(cornerRadius: 10.0))
+                    }
+                    .foregroundStyle(Color.white)
+                }
+
                 ToolbarItem {
                     Button {
                         store.send(.favoriteButtonTapped)
@@ -92,8 +106,10 @@ struct CharacterDetailsView: View {
                     }
                     .foregroundStyle(Color.red)
                 }
+                
+
             }
-            .navigationBarBackButtonHidden(store.episodeDetailsIsPresented)
+            .navigationBarBackButtonHidden(true)
         }
     }
 

@@ -15,6 +15,7 @@ struct ParameterView: View {
         VStack {
             Text(parameterValue.uppercased())
                 .font(.system(size: 15.0, weight: .heavy))
+                .multilineTextAlignment(.center)
 
             Text(parameterName.uppercased())
                 .font(.system(size: 8.0))
