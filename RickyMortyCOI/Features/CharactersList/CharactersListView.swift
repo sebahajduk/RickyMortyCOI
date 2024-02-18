@@ -21,6 +21,9 @@ struct CharactersListView: View {
             WithPerceptionTracking {
                 ZStack {
                     Color.customBlack.ignoresSafeArea()
+                        .onAppear {
+                            store.send(.updateData)
+                        }
 
                     if store.showCharactersList {
                         ScrollView {
@@ -29,7 +32,8 @@ struct CharactersListView: View {
                                     NavigationLink {
                                         CharacterDetailsView(
                                             store: Store(initialState: CharacterDetailsReducer.State(
-                                                character: character
+                                                character: character,
+                                                isFavorite: store.favoritesID.contains(character.id)
                                             ),
                                                          reducer: {
                                                              CharacterDetailsReducer()
@@ -37,12 +41,15 @@ struct CharactersListView: View {
                                             )
                                         )
                                     } label: {
-                                        CharactersListCell(imageURL: character.image, name: character.name)
-                                            .onAppear {
-                                                if character == store.state.characters.last {
-                                                    store.send(.reachedBottomOnList)
+                                        WithPerceptionTracking {
+                                            CharactersListCell(imageURL: character.image, name: character.name, isFavorite: store.favoritesID.contains(character.id))
+                                                .onAppear {
+                                                    if character == store.state.characters.last {
+                                                        store.send(.reachedBottomOnList)
+                                                    }
                                                 }
-                                            }
+                                        }
+
                                     }
                                     .buttonStyle(.plain)
                                 }

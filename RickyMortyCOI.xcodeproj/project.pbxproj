@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		602B16D62B7F801900F6B896 /* EpisodeDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602B16D52B7F801900F6B896 /* EpisodeDetailsView.swift */; };
 		602B16D82B7F82F400F6B896 /* ParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602B16D72B7F82F400F6B896 /* ParameterView.swift */; };
+		606C373F2B82262C008D227B /* FavoritesDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606C373E2B82262C008D227B /* FavoritesDependency.swift */; };
 		608040D12B7FF46B00EC4783 /* EpisodeDetailsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608040D02B7FF46B00EC4783 /* EpisodeDetailsReducer.swift */; };
 		608040D32B7FF96D00EC4783 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608040D22B7FF96D00EC4783 /* Episode.swift */; };
 		608040D72B8149A000EC4783 /* ClearBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608040D62B8149A000EC4783 /* ClearBackground.swift */; };
@@ -26,11 +27,15 @@
 		60DC55212B7E9C2E007B9845 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DC55202B7E9C2E007B9845 /* Character.swift */; };
 		60DC55252B7EA268007B9845 /* CharactersListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DC55242B7EA268007B9845 /* CharactersListCell.swift */; };
 		60DC552F2B7EB5ED007B9845 /* Color+customColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DC552E2B7EB5ED007B9845 /* Color+customColors.swift */; };
+		60F54CA52B820DBA004A4930 /* FavoritesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F54CA42B820DBA004A4930 /* FavoritesRepository.swift */; };
+		60F54CAB2B82162D004A4930 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 60F54CAA2B82162D004A4930 /* Realm */; };
+		60F54CAD2B82162D004A4930 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 60F54CAC2B82162D004A4930 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		602B16D52B7F801900F6B896 /* EpisodeDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailsView.swift; sourceTree = "<group>"; };
 		602B16D72B7F82F400F6B896 /* ParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterView.swift; sourceTree = "<group>"; };
+		606C373E2B82262C008D227B /* FavoritesDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesDependency.swift; sourceTree = "<group>"; };
 		608040D02B7FF46B00EC4783 /* EpisodeDetailsReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeDetailsReducer.swift; sourceTree = "<group>"; };
 		608040D22B7FF96D00EC4783 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		608040D62B8149A000EC4783 /* ClearBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearBackground.swift; sourceTree = "<group>"; };
@@ -48,6 +53,7 @@
 		60DC55202B7E9C2E007B9845 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		60DC55242B7EA268007B9845 /* CharactersListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersListCell.swift; sourceTree = "<group>"; };
 		60DC552E2B7EB5ED007B9845 /* Color+customColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+customColors.swift"; sourceTree = "<group>"; };
+		60F54CA42B820DBA004A4930 /* FavoritesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +61,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60F54CAD2B82162D004A4930 /* RealmSwift in Frameworks */,
+				60F54CAB2B82162D004A4930 /* Realm in Frameworks */,
 				60DC551D2B7E9A48007B9845 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +94,7 @@
 			children = (
 				60DC552E2B7EB5ED007B9845 /* Color+customColors.swift */,
 				608040D82B815AFF00EC4783 /* String+removeURL.swift */,
+				606C373E2B82262C008D227B /* FavoritesDependency.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -94,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				60DC55202B7E9C2E007B9845 /* Character.swift */,
+				60F54CA42B820DBA004A4930 /* FavoritesRepository.swift */,
 				60D4CE952B7EBD210088383C /* NetworkService.swift */,
 				60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */,
 				608040D22B7FF96D00EC4783 /* Episode.swift */,
@@ -186,6 +196,8 @@
 			name = RickyMortyCOI;
 			packageProductDependencies = (
 				60DC551C2B7E9A48007B9845 /* ComposableArchitecture */,
+				60F54CAA2B82162D004A4930 /* Realm */,
+				60F54CAC2B82162D004A4930 /* RealmSwift */,
 			);
 			productName = RickyMortyCOI;
 			productReference = 60DC55082B7E98E2007B9845 /* RickyMortyCOI.app */;
@@ -217,6 +229,7 @@
 			mainGroup = 60DC54FF2B7E98E2007B9845;
 			packageReferences = (
 				60DC551B2B7E9A48007B9845 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				60F54CA92B82162D004A4930 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 60DC55092B7E98E2007B9845 /* Products */;
 			projectDirPath = "";
@@ -246,6 +259,7 @@
 			files = (
 				60DC551F2B7E9C1A007B9845 /* CharactersReducer.swift in Sources */,
 				602B16D62B7F801900F6B896 /* EpisodeDetailsView.swift in Sources */,
+				606C373F2B82262C008D227B /* FavoritesDependency.swift in Sources */,
 				60D4CE9E2B7F5B750088383C /* CharacterDetailsReducer.swift in Sources */,
 				60DC552F2B7EB5ED007B9845 /* Color+customColors.swift in Sources */,
 				608040D92B815AFF00EC4783 /* String+removeURL.swift in Sources */,
@@ -257,6 +271,7 @@
 				60D4CE962B7EBD210088383C /* NetworkService.swift in Sources */,
 				608040D32B7FF96D00EC4783 /* Episode.swift in Sources */,
 				60D4CE982B7EBDB70088383C /* NetworkServiceErrors.swift in Sources */,
+				60F54CA52B820DBA004A4930 /* FavoritesRepository.swift in Sources */,
 				60DC550C2B7E98E2007B9845 /* RickyMortyCOIApp.swift in Sources */,
 				60DC55252B7EA268007B9845 /* CharactersListCell.swift in Sources */,
 				60DC55212B7E9C2E007B9845 /* Character.swift in Sources */,
@@ -488,6 +503,14 @@
 				minimumVersion = 1.8.0;
 			};
 		};
+		60F54CA92B82162D004A4930 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -500,6 +523,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60DC551B2B7E9A48007B9845 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		60F54CAA2B82162D004A4930 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60F54CA92B82162D004A4930 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		60F54CAC2B82162D004A4930 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60F54CA92B82162D004A4930 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,18 +9,22 @@ import SwiftUI
 import ComposableArchitecture
 
 struct CharacterDetailsView: View {
-
     @Perception.Bindable var store: StoreOf<CharacterDetailsReducer>
+    @State private var image: Image?
 
     var body: some View {
         WithPerceptionTracking {
             NavigationView {
                 ZStack(alignment: .top) {
                     Color.customBlack.ignoresSafeArea()
-
+                    
                     VStack(spacing: 10.0) {
                         AsyncImage(url: URL(string: store.character.image)) { image in
-                            image.resizable()
+                            image
+                                .resizable()
+                                .onAppear {
+                                    self.image = image
+                                }
                         } placeholder: {
                             ProgressView()
                         }
@@ -38,35 +42,34 @@ struct CharacterDetailsView: View {
                             )
                         }
 
-                        AsyncImage(url: URL(string: store.character.image)) { image in
-                            image.resizable()
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .frame(maxWidth: .infinity)
-                        .brightness(0.3)
-                        .blur(radius: 50.0)
-                        .mask {
-                            characterDetails
-                        }
+                        if let image {
+                            image
+                                .resizable()
+                                .frame(maxWidth: .infinity)
+                                .brightness(0.3)
+                                .blur(radius: 50.0)
+                                .mask {
+                                    characterDetails
+                                }
 
-                        ScrollView {
-                            ForEach(store.character.episode, id: \.self) { episodeURL in
-                                AsyncImage(url: URL(string: store.character.image))
-                                    .frame(height: 30.0)
-                                    .brightness(0.3)
-                                    .blur(radius: 50.0)
-                                    .mask {
-                                        Text("Episode \(episodeURL.mapEpisodeURLToNumber())".uppercased())
-                                            .frame(maxWidth: .infinity)
-                                            .font(.system(size: 15.0, weight: .black))
-                                    }
-                                    .onTapGesture {
-                                        var transaction = Transaction()
-                                        transaction.disablesAnimations = true
+                            ScrollView {
+                                ForEach(store.character.episode, id: \.self) { episodeURL in
+                                    image
+                                        .frame(height: 30.0)
+                                        .brightness(0.3)
+                                        .blur(radius: 50.0)
+                                        .mask {
+                                            Text("Episode \(episodeURL.mapEpisodeURLToNumber())".uppercased())
+                                                .frame(maxWidth: .infinity)
+                                                .font(.system(size: 15.0, weight: .black))
+                                        }
+                                        .onTapGesture {
+                                            var transaction = Transaction()
+                                            transaction.disablesAnimations = true
 
-                                        store.send(.episodeTapped(episode: episodeURL))
-                                    }
+                                            store.send(.episodeTapped(episode: episodeURL))
+                                        }
+                                }
                             }
                         }
                     }
@@ -80,6 +83,20 @@ struct CharacterDetailsView: View {
                         .background(ClearBackground())
                         .ignoresSafeArea()
                     }
+                }
+            }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        store.send(.favoriteButtonTapped)
+                    } label: {
+                        Image(systemName: store.isFavorite ? "heart.fill" : "heart")
+                            .font(.headline)
+                            .padding(10.0)
+                            .background(Color.customBlack)
+                            .clipShape(.rect(cornerRadius: 10.0))
+                    }
+                    .foregroundStyle(Color.red)
                 }
             }
             .navigationBarBackButtonHidden(store.episodeDetailsIsPresented)
@@ -120,8 +137,7 @@ struct CharacterDetailsView: View {
 #Preview {
     CharacterDetailsView(
         store: Store(
-            initialState: CharacterDetailsReducer.State(
-                character: Character(
+            initialState: CharacterDetailsReducer.State(character: Character(
                     id: 1,
                     name: "Ricky Morty",
                     status: "Alive",
@@ -130,7 +146,7 @@ struct CharacterDetailsView: View {
                     location: LastKnownLocation(name: "Earth"),
                     image: "https://rickandmortyapi.com/api/character/avatar/361.jpeg",
                     episode: []
-                )
+            ), isFavorite: false
             ),
             reducer: {
                 CharacterDetailsReducer()

@@ -35,9 +35,13 @@ struct EpisodeDetailsView: View {
                     store.send(.closeButtonTapped)
                 } label: {
                     Text("X")
+                        .padding(5.0)
+                        .background(Color.red.opacity(0.3))
+                        .clipShape(Circle())
                 }
                 .foregroundStyle(.red)
                 .padding(10.0)
+                .padding(.trailing, 5.0)
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 10.0)
