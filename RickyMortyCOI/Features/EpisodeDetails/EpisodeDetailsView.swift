@@ -28,6 +28,7 @@ struct EpisodeDetailsView: View {
                 ParameterView(parameterName: "Characters", parameterValue: "\(store.episode.characters.count)")
             }
             .padding()
+            .padding(.vertical, 20.0)
             .overlay(alignment: .topTrailing) {
                 Button {
                     store.send(.closeButtonTapped)

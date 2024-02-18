@@ -18,6 +18,8 @@ struct CharactersReducer {
         var characters: IdentifiedArrayOf<Character> = []
         var showCharactersList = false
         var page = 1
+
+        var searchText = ""
     }
 
     @Dependency(\.favoriteRepository) var favoriteRepository
@@ -29,6 +31,8 @@ struct CharactersReducer {
         case reachedBottomOnList
         case updateData
         case errorOccured(NetworkServiceErrors)
+        case searchChanged(String)
+        case searchChangeDebounced
 
         enum Alert {
             case cancelButtonTapped
@@ -45,7 +49,7 @@ struct CharactersReducer {
                 
                 if state.showCharactersList {
                     state.page = 1
-                    
+
                     return .run { send in
                         do {
                             let charactersList = try await NetworkService.fetchCharactersList(for: 1)
@@ -60,6 +64,7 @@ struct CharactersReducer {
                     state.characters = []
                     return .none
                 }
+                
             case .charactersResponse(let response):
                 response.forEach { state.characters.append($0) }
                 state.favoritesID = self.favoriteRepository.favoritesList
@@ -70,9 +75,7 @@ struct CharactersReducer {
                 state.page = nextPage
                 return .run { send in
                     do {
-                        
                         let charactersList = try await NetworkService.fetchCharactersList(for: nextPage)
-
                         await send(.charactersResponse(charactersList))
                     } catch {
                         if let error = error as? NetworkServiceErrors {
@@ -104,6 +107,29 @@ struct CharactersReducer {
                 }
 
                 return .none
+            case .searchChanged(let text):
+                state.searchText = text
+                return .none
+
+            case .searchChangeDebounced:
+                let searchText = state.searchText
+                state.characters.removeAll()
+                return .run { send in
+                    do {
+                        var charactersList = [Character]()
+                        
+                        if !searchText.isEmpty {
+                            charactersList = try await NetworkService.fetchCharactersList(for: 1, filter: searchText)
+                        } else {
+                            charactersList = try await NetworkService.fetchCharactersList(for: 1)
+                        }
+                        await send(.charactersResponse(charactersList))
+                    } catch {
+                        if let error = error as? NetworkServiceErrors {
+                            await send(.errorOccured(error))
+                        }
+                    }
+                }
             }
         }
         .ifLet(\.$alert, action: \.alert)

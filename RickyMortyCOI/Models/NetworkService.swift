@@ -12,9 +12,17 @@ struct NetworkService {
         let results: [Character]
     }
 
-    static func fetchCharactersList(for page: Int) async throws -> [Character] {
+    static func fetchCharactersList(for page: Int, filter: String? = nil) async throws -> [Character] {
+        var stringForURL = ""
+        
+        if let filter {
+            stringForURL = "https://rickandmortyapi.com/api/character?page=\(page)&name=\(filter)"
+        } else {
+            stringForURL = "https://rickandmortyapi.com/api/character?page=\(page)"
+        }
+
         guard
-            let url = URL(string: "https://rickandmortyapi.com/api/character?page=\(page)")
+            let url = URL(string: stringForURL)
         else {
             throw NetworkServiceErrors.wrongURL
         }
@@ -25,7 +33,11 @@ struct NetworkService {
             let response = response as? HTTPURLResponse,
             response.statusCode == 200
         else {
-            throw NetworkServiceErrors.invalidResponse
+            if filter != nil {
+                return []
+            } else {
+                throw NetworkServiceErrors.invalidResponse
+            }
         }
         
         do {

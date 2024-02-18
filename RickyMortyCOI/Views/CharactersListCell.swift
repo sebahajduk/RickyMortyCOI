@@ -47,6 +47,7 @@ struct CharactersListCell: View {
                 .overlay {
                     Text(name)
                         .fontWeight(.bold)
+                        .foregroundStyle(Color.customBlack)
                 }
         }
         .overlay(alignment: .topTrailing) {
@@ -76,14 +77,6 @@ struct CharactersListCell: View {
                 Color.red
             }
         }
-        .clipShape(.rect(cornerRadius: 30.0))
-        .aspectRatio(contentMode: .fit)
-        .overlay {
-            RoundedRectangle(cornerRadius: 30.0)
-                .stroke(lineWidth: 1.0)
-                .foregroundStyle(.white.opacity(0.3))
-        }
-        .padding(.horizontal, 10.0)
     }
 }
 

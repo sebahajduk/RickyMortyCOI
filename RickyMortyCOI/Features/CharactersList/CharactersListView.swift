@@ -26,40 +26,56 @@ struct CharactersListView: View {
                         }
 
                     if store.showCharactersList {
-                        ScrollView {
-                            LazyVGrid(columns: gridColumns) {
-                                ForEach(store.characters) { character in
-                                    WithPerceptionTracking {
-                                        NavigationLink {
-                                            CharacterDetailsView(
-                                                store: Store(
-                                                    initialState: CharacterDetailsReducer.State(
-                                                        character: character,
-                                                        isFavorite: store.favoritesID.contains(character.id)
-                                                    ),
-                                                    reducer: {
-                                                        CharacterDetailsReducer()
-                                                    }
+                        VStack {
+                            TextField("Search", text: $store.searchText.sending(\.searchChanged))
+                                .textFieldStyle(.roundedBorder)
+                                .padding()
+
+                            ScrollView {
+                                LazyVGrid(columns: gridColumns) {
+                                    ForEach(store.characters) { character in
+                                        WithPerceptionTracking {
+                                            NavigationLink {
+                                                CharacterDetailsView(
+                                                    store: Store(
+                                                        initialState: CharacterDetailsReducer.State(
+                                                            character: character,
+                                                            isFavorite: store.favoritesID.contains(character.id)
+                                                        ),
+                                                        reducer: {
+                                                            CharacterDetailsReducer()
+                                                        }
+                                                    )
                                                 )
-                                            )
-                                        } label: {
-                                            CharactersListCell(
-                                                imageURL: character.image,
-                                                name: character.name,
-                                                isFavorite: store.favoritesID.contains(character.id)
-                                            )
-                                            .onAppear {
-                                                if character == store.state.characters.last {
-                                                    store.send(.reachedBottomOnList)
+                                            } label: {
+                                                CharactersListCell(
+                                                    imageURL: character.image,
+                                                    name: character.name,
+                                                    isFavorite: store.favoritesID.contains(character.id)
+                                                )
+                                                .onAppear {
+                                                    if character == store.state.characters.last {
+                                                        store.send(.reachedBottomOnList)
+                                                    }
                                                 }
                                             }
+                                            .buttonStyle(.plain)
                                         }
-                                        .buttonStyle(.plain)
                                     }
                                 }
                             }
+                            .padding()
+                            .task(id: store.searchText) {
+                                do {
+                                    if #available(iOS 16.0, *) {
+                                        try await Task.sleep(for: .seconds(0.3))
+                                    } else {
+                                        try await Task.sleep(nanoseconds: 300_000_000)
+                                    }
+                                    await store.send(.searchChangeDebounced).finish()
+                                } catch { }
+                            }
                         }
-                        .padding()
                     } else {
                         Text("Tap eye button to show Rick and Morty characters")
                             .font(.headline)
@@ -84,7 +100,6 @@ struct CharactersListView: View {
                     .padding(44.0)
                     .alert($store.scope(state: \.alert, action: \.alert))
                 }
-
             }
         }
     }
