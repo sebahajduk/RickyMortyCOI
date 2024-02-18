@@ -5,7 +5,7 @@
 //  Created by Sebastian Hajduk on 16/02/2024.
 //
 
-import Foundation
+import SwiftUI
 import ComposableArchitecture
 
 @Reducer
@@ -15,9 +15,11 @@ struct CharacterDetailsReducer {
         var episodeDetails: EpisodeDetailsReducer.State?
         let character: Character
         var episode: Episode?
-
+        var isFavorite: Bool
         var episodeDetailsIsPresented = false
     }
+
+    @Dependency(\.favoriteRepository) var favoriteRepository
 
     enum Action {
         case episodeDetails(EpisodeDetailsReducer.Action)
@@ -25,8 +27,10 @@ struct CharacterDetailsReducer {
 
         case episodeTapped(episode: String)
         case onSuccessEpisodeSetup(episode: Episode)
+
+        case favoriteButtonTapped
     }
-    
+
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
@@ -56,6 +60,22 @@ struct CharacterDetailsReducer {
 
                 return .run { send in
                     await send(.setEpisodeDetails(isPresented: true))
+                }
+            case .favoriteButtonTapped:
+                let characterID = state.character.id
+                state.isFavorite.toggle()
+
+                return .run { send in
+                    DispatchQueue.main.async { 
+                        Task {
+                            if self.favoriteRepository.favoritesList.contains(characterID) {
+
+                                await self.favoriteRepository.removeFavorite(id: characterID)
+                            } else {
+                                await self.favoriteRepository.addFavorite(id: characterID)
+                            }
+                        }
+                    }
                 }
             }
         }
