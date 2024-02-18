@@ -13,7 +13,6 @@ struct NetworkService {
     }
 
     static func fetchCharactersList(for page: Int) async throws -> [Character] {
-        throw NetworkServiceErrors.wrongURL
         guard
             let url = URL(string: "https://rickandmortyapi.com/api/character?page=\(page)")
         else {
@@ -46,7 +45,7 @@ struct NetworkService {
         else {
             throw NetworkServiceErrors.wrongURL
         }
-        print(url)
+
         let (data, response) = try await URLSession.shared.data(from: url)
 
         guard
@@ -59,7 +58,7 @@ struct NetworkService {
         do {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            print(response)
+
             let episode = try decoder.decode(Episode.self, from: data)
 
             return episode

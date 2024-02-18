@@ -103,10 +103,10 @@
 			isa = PBXGroup;
 			children = (
 				60DC55202B7E9C2E007B9845 /* Character.swift */,
+				608040D22B7FF96D00EC4783 /* Episode.swift */,
+				60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */,
 				60F54CA42B820DBA004A4930 /* FavoritesRepository.swift */,
 				60D4CE952B7EBD210088383C /* NetworkService.swift */,
-				60D4CE972B7EBDB70088383C /* NetworkServiceErrors.swift */,
-				608040D22B7FF96D00EC4783 /* Episode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

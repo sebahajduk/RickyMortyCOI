@@ -16,9 +16,7 @@ struct EpisodeDetailsView: View {
         ZStack {
             Color.customBlack.opacity(0.3)
                 .background(.ultraThinMaterial)
-                .onTapGesture {
-                    store.send(.closeButtonTapped)
-                }
+                .onTapGesture { store.send(.closeButtonTapped) }
 
             VStack(spacing: 10.0) {
                 ParameterView(parameterName: "Episode name", parameterValue: store.episode.name)
