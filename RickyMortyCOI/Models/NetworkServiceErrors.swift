@@ -12,7 +12,7 @@ enum NetworkServiceErrors: Error {
 }
 
 extension NetworkServiceErrors: LocalizedError {
-    var localizedDescription: String? {
+    var errorDescription: String? {
         switch self {
         case .wrongURL:
             "Wrong URL. Cannot download data."

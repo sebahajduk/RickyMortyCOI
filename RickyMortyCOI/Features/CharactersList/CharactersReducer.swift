@@ -28,7 +28,7 @@ struct CharactersReducer {
         case charactersResponse([Character])
         case reachedBottomOnList
         case updateData
-        case errorOccured(Error)
+        case errorOccured(NetworkServiceErrors)
 
         enum Alert {
             case cancelButtonTapped
@@ -51,7 +51,9 @@ struct CharactersReducer {
                             let charactersList = try await NetworkService.fetchCharactersList(for: 1)
                             await send(.charactersResponse(charactersList))
                         } catch {
-                            await send(.errorOccured(error))
+                            if let error = error as? NetworkServiceErrors {
+                                await send(.errorOccured(error))
+                            }
                         }
                     }
                 } else {
@@ -73,7 +75,9 @@ struct CharactersReducer {
 
                         await send(.charactersResponse(charactersList))
                     } catch {
-                        await send(.errorOccured(error))
+                        if let error = error as? NetworkServiceErrors {
+                            await send(.errorOccured(error))
+                        }
                     }
                 }
 
@@ -96,7 +100,7 @@ struct CharactersReducer {
                         TextState("Cancel")
                     }
                 } message: {
-                    TextState(error.localizedDescription)
+                    TextState(error.errorDescription ?? "Unknown error")
                 }
 
                 return .none

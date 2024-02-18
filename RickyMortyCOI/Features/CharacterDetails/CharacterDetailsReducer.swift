@@ -31,7 +31,7 @@ struct CharacterDetailsReducer {
 
         case favoriteButtonTapped
 
-        case errorOccured(Error)
+        case errorOccured(NetworkServiceErrors)
         case alert(PresentationAction<Alert>)
 
         enum Alert {
@@ -63,7 +63,9 @@ struct CharacterDetailsReducer {
                         let episode = try await NetworkService.fetchEpisodeDetails(for: episode)
                         await send(.onSuccessEpisodeSetup(episode: episode))
                     } catch {
-                        await send(.errorOccured(error))
+                        if let error = error as? NetworkServiceErrors {
+                            await send(.errorOccured(error))
+                        }
                     }
                 }
 
@@ -105,7 +107,7 @@ struct CharacterDetailsReducer {
                         TextState("Cancel")
                     }
                 } message: {
-                    TextState(error.localizedDescription)
+                    TextState(error.errorDescription ?? "Unknown error")
                 }
 
                 return .none
