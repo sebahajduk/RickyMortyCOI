@@ -72,10 +72,19 @@ struct CharactersReducer {
 
             case .reachedBottomOnList:
                 let nextPage = state.page + 1
+                let searchText = state.searchText
+
                 state.page = nextPage
+
                 return .run { send in
                     do {
-                        let charactersList = try await NetworkService.fetchCharactersList(for: nextPage)
+                        var charactersList = [Character]()
+
+                        if !searchText.isEmpty {
+                            charactersList = try await NetworkService.fetchCharactersList(for: 1, filter: searchText)
+                        } else {
+                            charactersList = try await NetworkService.fetchCharactersList(for: 1)
+                        }
                         await send(.charactersResponse(charactersList))
                     } catch {
                         if let error = error as? NetworkServiceErrors {

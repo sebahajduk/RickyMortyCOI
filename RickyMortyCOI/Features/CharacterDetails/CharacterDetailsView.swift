@@ -106,8 +106,6 @@ struct CharacterDetailsView: View {
                     }
                     .foregroundStyle(Color.red)
                 }
-                
-
             }
             .navigationBarBackButtonHidden(true)
         }
