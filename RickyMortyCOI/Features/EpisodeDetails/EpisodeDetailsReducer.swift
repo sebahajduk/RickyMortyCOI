@@ -23,7 +23,7 @@ struct EpisodeDetailsReducer {
         Reduce { state, action in
             switch action {
             case .closeButtonTapped:
-                
+                /// Handled by parent reducer
                 return .none
             }
         }

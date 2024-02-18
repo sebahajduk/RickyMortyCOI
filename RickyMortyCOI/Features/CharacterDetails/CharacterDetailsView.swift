@@ -48,9 +48,7 @@ struct CharacterDetailsView: View {
                                 .frame(maxWidth: .infinity)
                                 .brightness(0.3)
                                 .blur(radius: 50.0)
-                                .mask {
-                                    characterDetails
-                                }
+                                .mask { characterDetails }
 
                             ScrollView {
                                 ForEach(store.character.episode, id: \.self) { episodeURL in
@@ -63,12 +61,7 @@ struct CharacterDetailsView: View {
                                                 .frame(maxWidth: .infinity)
                                                 .font(.system(size: 15.0, weight: .black))
                                         }
-                                        .onTapGesture {
-                                            var transaction = Transaction()
-                                            transaction.disablesAnimations = true
-
-                                            store.send(.episodeTapped(episode: episodeURL))
-                                        }
+                                        .onTapGesture { store.send(.episodeTapped(episode: episodeURL)) }
                                 }
                             }
                         }
@@ -138,7 +131,8 @@ struct CharacterDetailsView: View {
 #Preview {
     CharacterDetailsView(
         store: Store(
-            initialState: CharacterDetailsReducer.State(character: Character(
+            initialState: CharacterDetailsReducer.State(
+                character: Character(
                     id: 1,
                     name: "Ricky Morty",
                     status: "Alive",
@@ -147,7 +141,8 @@ struct CharacterDetailsView: View {
                     location: LastKnownLocation(name: "Earth"),
                     image: "https://rickandmortyapi.com/api/character/avatar/361.jpeg",
                     episode: []
-            ), isFavorite: false
+                ),
+                isFavorite: false
             ),
             reducer: {
                 CharacterDetailsReducer()

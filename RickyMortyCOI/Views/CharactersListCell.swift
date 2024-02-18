@@ -10,15 +10,9 @@ import ComposableArchitecture
 
 struct CharactersListCell: View {
 
-    private let imageURL: String
-    private let name: String
-    private let isFavorite: Bool
-
-    init(imageURL: String, name: String, isFavorite: Bool) {
-        self.imageURL = imageURL
-        self.name = name
-        self.isFavorite = isFavorite
-    }
+    let imageURL: String
+    let name: String
+    let isFavorite: Bool
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -37,13 +31,11 @@ struct CharactersListCell: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .clipShape(.rect(cornerRadius: 30.0))
             .aspectRatio(contentMode: .fit)
-
             .overlay {
                 RoundedRectangle(cornerRadius: 30.0)
                     .stroke(lineWidth: 1.0)
                     .foregroundStyle(.white.opacity(0.3))
             }
-
             .padding(.horizontal, 10.0)
 
             LinearGradient(colors: [.black, .white.opacity(0.2), .clear], startPoint: .bottom, endPoint: .center)
@@ -56,7 +48,6 @@ struct CharactersListCell: View {
                     Text(name)
                         .fontWeight(.bold)
                 }
-
         }
         .overlay(alignment: .topTrailing) {
             if isFavorite {

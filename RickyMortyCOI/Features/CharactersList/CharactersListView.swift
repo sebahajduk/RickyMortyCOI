@@ -32,22 +32,27 @@ struct CharactersListView: View {
                                     WithPerceptionTracking {
                                         NavigationLink {
                                             CharacterDetailsView(
-                                                store: Store(initialState: CharacterDetailsReducer.State(
-                                                    character: character,
-                                                    isFavorite: store.favoritesID.contains(character.id)
-                                                ),
-                                                             reducer: {
-                                                                 CharacterDetailsReducer()
-                                                             }
+                                                store: Store(
+                                                    initialState: CharacterDetailsReducer.State(
+                                                        character: character,
+                                                        isFavorite: store.favoritesID.contains(character.id)
+                                                    ),
+                                                    reducer: {
+                                                        CharacterDetailsReducer()
+                                                    }
                                                 )
                                             )
                                         } label: {
-                                            CharactersListCell(imageURL: character.image, name: character.name, isFavorite: store.favoritesID.contains(character.id))
-                                                .onAppear {
-                                                    if character == store.state.characters.last {
-                                                        store.send(.reachedBottomOnList)
-                                                    }
+                                            CharactersListCell(
+                                                imageURL: character.image,
+                                                name: character.name,
+                                                isFavorite: store.favoritesID.contains(character.id)
+                                            )
+                                            .onAppear {
+                                                if character == store.state.characters.last {
+                                                    store.send(.reachedBottomOnList)
                                                 }
+                                            }
                                         }
                                         .buttonStyle(.plain)
                                     }

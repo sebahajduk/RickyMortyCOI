@@ -8,12 +8,8 @@
 import Foundation
 import ComposableArchitecture
 
-private enum FavoritesDependency {
-    static let live = FavoritesRepository()
-}
-
-extension FavoritesDependency: DependencyKey {
-    static let liveValue = FavoritesDependency.live
+private enum FavoritesDependency: DependencyKey {
+    static let liveValue = FavoritesRepository()
 }
 
 extension DependencyValues {

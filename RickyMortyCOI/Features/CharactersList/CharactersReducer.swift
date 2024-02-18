@@ -12,7 +12,7 @@ import ComposableArchitecture
 struct CharactersReducer {
     @ObservableState
     struct State {
-        @Presents var characterDetails: CharacterDetailsReducer.State?
+        var characterDetails: CharacterDetailsReducer.State?
         @Presents var alert: AlertState<Action.Alert>?
         var favoritesID = Set<Int>()
         var characters: IdentifiedArrayOf<Character> = []

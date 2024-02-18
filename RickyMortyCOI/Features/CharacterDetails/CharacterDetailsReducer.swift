@@ -69,19 +69,13 @@ struct CharacterDetailsReducer {
                     }
                 }
 
-            case .alert(.presented(.cancelButtonTapped)):
-                state.alert = nil
-                return .none
-
-            case .alert:
-                return .none
-
             case .onSuccessEpisodeSetup(episode: let episode):
                 state.episode = episode
 
                 return .run { send in
                     await send(.setEpisodeDetails(isPresented: true))
                 }
+                
             case .favoriteButtonTapped:
                 let characterID = state.character.id
                 state.isFavorite.toggle()
@@ -110,6 +104,13 @@ struct CharacterDetailsReducer {
                     TextState(error.errorDescription ?? "Unknown error")
                 }
 
+                return .none
+                
+            case .alert(.presented(.cancelButtonTapped)):
+                state.alert = nil
+                return .none
+
+            case .alert:
                 return .none
             }
         }
