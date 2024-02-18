@@ -85,6 +85,7 @@ struct CharacterDetailsView: View {
                     }
                 }
             }
+            .alert($store.scope(state: \.alert, action: \.alert))
             .toolbar {
                 ToolbarItem {
                     Button {

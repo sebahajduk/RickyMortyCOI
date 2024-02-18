@@ -10,3 +10,16 @@ import Foundation
 enum NetworkServiceErrors: Error {
     case wrongURL, invalidResponse, invalidData
 }
+
+extension NetworkServiceErrors: LocalizedError {
+    var localizedDescription: String? {
+        switch self {
+        case .wrongURL:
+            "Wrong URL. Cannot download data."
+        case .invalidResponse:
+            "Invalid response, check your internet connection."
+        case .invalidData:
+            "Data is invalid, try again."
+        }
+    }
+}
